@@ -1,0 +1,96 @@
+body {
+  font-size: 22px;
+  font-family: Neucha, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #e8eff5;
+}
+
+.Form-Wrap {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.Form {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.Form-Show {
+  display: flex;
+}
+
+.Form .close {
+  position: absolute;
+  right: 15px;
+  top: 5px;
+}
+
+.Form textarea {
+  height: 35vh;
+  max-height: 300px;
+  resize: none;
+}
+
+.Note-List {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 760px;
+}
+
+.Note-List li {
+  position: relative;
+  padding: 20px 80px;
+  background-image: url('./../note-bg.png');
+  background-size: 100% 100%;
+}
+
+.Note-List .close {
+  position: absolute;
+  right: 50px;
+  top: 20px;
+}
+
+@media screen and (max-width: 576px) {
+  .Form {
+    height: 90%;
+  }
+
+  .Textarea-Group {
+    height: 70%;
+  }
+
+  .Form textarea {
+    height: 90%;
+    max-height: unset;
+  }
+
+  .Note-List {
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .Note-List li {
+    flex-shrink: 0;
+    width: 100%;
+    max-height: 90vh;
+  }
+
+  .Note-Wrap {
+    height: 90%;
+    overflow: auto;
+  }
+}

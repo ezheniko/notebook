@@ -7,12 +7,33 @@ class NoteForm {
   }
 
   render() {
-    let html = '<form class="form"><p class="Form-Group"><label for="note-text-field">New note</label><textarea name="text" class="Note-Text" id="note-text-field" required></textarea></p><p><label for="date-field">Дата</label><input type="date" name="date" id="date-field" required></p><p><input type="submit" value="Добавить"></p><button>Закрыть</button></form>';
+    let html = `<div class="Form-Wrap">
+      <form class="col-12 col-sm-10	col-md-8 col-lg-6	col-xl-4 Form">
+        <p class="form-group Textarea-Group">
+          <label for="note-text-field">New note</label>
+          <textarea name="text" class="form-control" id="note-text-field" required></textarea>
+        </p>
+        <p class="form-group">
+          <label for="date-field">Дата</label>
+          <input type="date" name="date" id="date-field class="form-control" required>
+        </p>
+        <p class="form-group"><input type="submit" value="Добавить" class="btn btn-primary"></p>
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </form>
+    </div>`;
     this.elem = createElementFromHtml(html);
-    this.elem.addEventListener('submit', this);
-    this.elem.querySelector('button').addEventListener('click', (event) => {
+    this.form = this.elem.querySelector('form');
+    this.form.addEventListener('submit', this);
+    this.form.querySelector('button').addEventListener('click', (event) => {
       event.preventDefault();
       this.hide();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.keyCode === 27) {
+        if (this.elem.classList.contains('Form-Show')) this.hide();
+      }
     });
   }
 
@@ -21,7 +42,7 @@ class NoteForm {
   }
 
   onSubmit(event) {
-    this.elem.dispatchEvent(new CustomEvent('note-add', {
+    this.form.dispatchEvent(new CustomEvent('note-add', {
       bubbles: true
     }));
 
@@ -29,14 +50,14 @@ class NoteForm {
   }
 
   refresh() {
-    this.elem.text.value = '';
-    this.elem.date.valueAsDate = new Date();
+    this.form.text.value = '';
+    this.form.date.valueAsDate = new Date();
   }
 
   show() {
     this.refresh();
     this.elem.classList.add('Form-Show');
-    this.elem.text.focus();
+    this.form.text.focus();
   }
 
   hide() {
@@ -45,8 +66,8 @@ class NoteForm {
 
   getData() {
     return {
-      'text': this.elem.text.value,
-      'time': this.elem.date.valueAsNumber
+      'text': this.form.text.value,
+      'time': this.form.date.valueAsNumber
     };
   }
 }
