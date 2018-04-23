@@ -10,7 +10,8 @@ class NoteList {
     let html = `<ul class="Note-List container"></ul>`;
     this.elem = createElementFromHtml(html);
     this.elem.addEventListener('click', this);
-    this.elem.addEventListener('mousedown', (event) => this.moveAt(event));
+    this.elem.addEventListener('mousedown', event => this.mouseDown(event));
+    this.elem.addEventListener('touchstart', event => this.swipe(event));
   }
 
   showNotes(notes) {
@@ -60,21 +61,69 @@ class NoteList {
     }
   }
 
-  onMousedown(event) {
+  mouseDown(event) {
     if (window.innerWidth > 576) return;
     let target = event.target.closest('li');
     if (!target) return;
+    this.dragObject = {
+      downX: event.pageX,
+      downY: event.pageY
+    };
+    let isDrag = false;
+    let self = this;
+    document.addEventListener('mousemove', moveAt);
+    document.addEventListener('mouseup', stopDrag);
 
-    this.elem.dispatchEvent(new CustomEvent('note-swipe', {
-      bubbles: true,
-      detail: event.pageX
-    }));
+    function moveAt(event) {
+      // убрать лишние self
+      if (!self.isDrag) {
+        let moveX = event.pageX - self.dragObject.downX;
+        let moveY = event.pageY - self.dragObject.downY;
+        if (Math.abs(moveX) < 5 && Math.abs(moveY) < 5) return;
+      }
+
+      self.shift = event.pageX - self.dragObject.downX;
+
+    }
+    function stopDrag() {
+      document.removeEventListener('mousemove', moveAt);
+      document.removeEventListener('mouseup', stopDrag);
+    }
   }
 
-  moveAt(event) {
-    if (window.innerWidth > 576) return;
-    let target = event.target.closest('li');
-    if (!target) return;
-    console.log(event.pageX);
+  swipe(event) {
+    console.log(event.touches[0]);
+    let startX = event.touches[0].clientX;
+    let firstElem = this.elem.firstElementChild;
+    let firstElemPosX = firstElem.getBoundingClientRect().left;
+    let shiftX = 0;
+    let margin = 0;
+    let marginMax = 0;
+    let marginMin = firstElemPosX - this.elem.lastElementChild.getBoundingClientRect().left;
+    let isMove = false;
+    let finishMargin = 0;
+    let self = this;
+    document.addEventListener('touchmove', move);
+    document.addEventListener('touchend', stopSwipe);
+    
+    function move(event) {
+      if (!isMove) {
+        let moveX = event.touches[0].clientX - startX;
+        if (Math.abs(moveX) < 5) return;
+      }
+      isMove = true;
+      shiftX = event.touches[0].clientX - startX;
+      margin = firstElemPosX + shiftX;
+      if (margin > 0) margin = 0;
+      if (margin < marginMin) margin = marginMin;
+      firstElem.style.marginLeft = margin + 'px';
+    }
+
+    function stopSwipe(event) {
+      
+      document.removeEventListener('touchmove', move);
+      document.removeEventListener('touchend', stopSwipe);
+    }
   }
+
 }
