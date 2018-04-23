@@ -12,7 +12,6 @@ class Notebook {
     
     this.load();
     this.noteList.getElem().addEventListener('note-delete', this.onNoteDelete.bind(this));
-    this.noteList.getElem().addEventListener('note-swipe', this.onNoteSwipe.bind(this));
     this.button.addEventListener('click', () => {
       if (!this.noteForm)  this.createForm();
       this.noteForm.show();
@@ -38,11 +37,6 @@ class Notebook {
     delete this.notes[event.detail];
     this.save();
     this.load();
-  }
-
-  onNoteSwipe(event) {
-    console.log(event.detail);
-    // document.addEventListener('mousedown')
   }
 
   load() {
