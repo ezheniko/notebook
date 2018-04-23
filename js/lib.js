@@ -3,3 +3,8 @@ function createElementFromHtml(html) {
   tmp.innerHTML = html.trim();
   return tmp.firstChild;
 }
+
+function fixDate(datePart) {
+  if (datePart < 10) return `0${datePart}`;
+  return datePart;
+}

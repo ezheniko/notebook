@@ -57,6 +57,12 @@ body {
   background-size: 100% 100%;
 }
 
+.Note-List time {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 40px;
+}
+
 .Note-List .close {
   position: absolute;
   right: 50px;
@@ -81,6 +87,7 @@ body {
     flex-direction: row;
     width: 100%;
     overflow: hidden;
+    align-items: flex-start;
   }
 
   .Note-List li {
@@ -89,8 +96,9 @@ body {
     max-height: 90vh;
   }
 
-  .Note-Wrap {
-    height: 90%;
+  .Note-List p {
+    max-height: 79vh;
+    margin-bottom: 45px;
     overflow: auto;
   }
 }

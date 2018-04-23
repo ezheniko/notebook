@@ -20,12 +20,9 @@ class NoteList {
     let html = '';
     for (let note of this.notes) {
       let date = new Date(notes[note].time);
-      let dateStr = `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
+      let dateStr = `${fixDate(date.getDate())} ${fixDate(date.getMonth())} ${date.getFullYear()}`;
       html += `<li class = "Note">
-        <div class="Note-Wrap">
-          <p>${notes[note].text}</p>
-          <datetime>${dateStr}</datetime>
-        </div>
+        <p>${notes[note].text}<time datetime="dateStr">${dateStr}</time></p>
         <button data-note-id="${note}" type="button" class="close" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -78,7 +75,6 @@ class NoteList {
     document.addEventListener('mouseup', stopDrag);
 
     function moveAt(event) {
-      // убрать лишние self
       if (!isDrag) {
         let moveX = event.pageX - startX;
         if (Math.abs(moveX) < 5) return;
